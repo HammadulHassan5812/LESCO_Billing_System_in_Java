@@ -7,6 +7,7 @@ public class Main {
         Employee e = new Employee("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\EmployeesData.txt");
         e.load_EmployeeData();
         List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
+        List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
 
 
 
@@ -26,6 +27,10 @@ public class Main {
 //        }
 //
 //
+
+//        for (BillingInfo billingInfo : billingInfos) {
+//            billingInfo.displayBillingInfo();
+//        }
 
 
 

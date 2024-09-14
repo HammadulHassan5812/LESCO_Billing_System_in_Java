@@ -19,6 +19,7 @@ public class BillingInfo
     String bill_paid_status;
     String payment_date;
 
+public BillingInfo(){}
 
     public BillingInfo(String cus_id,int billing_m, int curr_reg_meter, int curr_reg_peak, String reading_date,
                        int cost_of_elec, int sales_tax, int fixed_charges, int total_amnt,
@@ -91,6 +92,29 @@ public class BillingInfo
         }
         return billingList;
     }
+
+    public void Show_Bill_reports(List<BillingInfo> billingInfos)
+    {
+        int count1=0;
+        int count2=0;
+
+        for (BillingInfo billingInfo : billingInfos)
+        {
+
+            if(billingInfo.bill_paid_status.equals("paid"))
+            {
+               count1++;
+            }
+            else
+            {
+                count2++;
+            }
+        }
+        System.out.println("The amount of Paid Bills "+count1);
+        System.out.println("The amount of Unpaid Bills is "+count2);
+
+    }
+
 
 
 }

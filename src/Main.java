@@ -4,12 +4,18 @@ public class Main {
 
     public static void main(String[] args)
     {
+        //Loading files data
         Employee e = new Employee("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\EmployeesData.txt");
         e.load_EmployeeData();
         List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
         List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
         List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\TariffTaxInfo.txt");
+        List<NadraDB>ndb=NadraDB.Load_NBData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\NadraDB.txt");
 
+
+        //showing bill_reports
+//        BillingInfo b2=new BillingInfo();
+//        b2.Show_Bill_reports(billingInfos);
 
 
 
@@ -39,6 +45,11 @@ public class Main {
 //            pricingInfo.displayInfo();
 //        }
 
+
+        //NadraDB data
+//        for (NadraDB nadraDB : ndb) {
+//         nadraDB.displayInfo();
+//        }
 
 
     }

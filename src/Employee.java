@@ -5,13 +5,17 @@ import java.util.*;
 
 public class Employee {
     // username and password storage
+    private String filename;
     private Map<String, String> employees = new HashMap<>();
 
     // Constructor
-    Employee() {}
+    Employee(String filename1)
+    {
+           filename=filename1;
+    }
 
     // Method to load employee data from file
-    public void load_EmployeeData(String filename) {
+    public void load_EmployeeData() {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
             String line;
@@ -60,10 +64,23 @@ public class Employee {
 
             employees.put(username, newPassword);  // Updating password
             System.out.println("Password updated successfully for user: " + username);
+            saveEmployeeData();
         } else {
             System.out.println("You have entered the wrong password.");
         }
     }
 
+    public void saveEmployeeData() {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            for (Map.Entry<String, String> entry : employees.entrySet()) {
+                writer.write(entry.getKey() + "," + entry.getValue());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

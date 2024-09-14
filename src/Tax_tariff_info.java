@@ -11,6 +11,12 @@ public class Tax_tariff_info {
     private Integer peakHourUnitPrice; // use Integer to handle null values
     private int taxPercentage;
     private int fixedCharges;
+    public static String filename;
+    Tax_tariff_info(String fn)
+    {
+        this.filename=fn;
+    }
+    Tax_tariff_info(){}
 
     // Constructor
     public Tax_tariff_info(String meterType, int regularUnitPrice, Integer peakHourUnitPrice,
@@ -32,8 +38,26 @@ public class Tax_tariff_info {
         System.out.println();
     }
 
+    // Getters and Setters for updating fields
+    public String getMeterType() { return meterType; }
+    public void setMeterType(String meterType) { this.meterType = meterType; }
+
+    public int getRegularUnitPrice() { return regularUnitPrice; }
+    public void setRegularUnitPrice(int regularUnitPrice) { this.regularUnitPrice = regularUnitPrice; }
+
+    public Integer getPeakHourUnitPrice() { return peakHourUnitPrice; }
+    public void setPeakHourUnitPrice(Integer peakHourUnitPrice) { this.peakHourUnitPrice = peakHourUnitPrice; }
+
+    public int getTaxPercentage() { return taxPercentage; }
+    public void setTaxPercentage(int taxPercentage) { this.taxPercentage = taxPercentage; }
+
+    public int getFixedCharges() { return fixedCharges; }
+    public void setFixedCharges(int fixedCharges) { this.fixedCharges = fixedCharges; }
+
+
+
     // Method to load pricing data from file
-    public static List<Tax_tariff_info> loadPricingData(String filename) {
+    public static List<Tax_tariff_info> loadPricingData() {
         List<Tax_tariff_info> pricingList = new ArrayList<>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -66,6 +90,100 @@ public class Tax_tariff_info {
         }
         return pricingList;
     }
+
+
+//save file data
+    public static void savePricingData( List<Tax_tariff_info> pricingList) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+            for (Tax_tariff_info info : pricingList) {
+                writer.write(info.getMeterType() + "," + info.getRegularUnitPrice() + "," +
+                        (info.getPeakHourUnitPrice() != null ? info.getPeakHourUnitPrice() : "") + "," +
+                        info.getTaxPercentage() + "," + info.getFixedCharges());
+                writer.newLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void updateOrAddData(List<Tax_tariff_info> pricingList) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Would you like to update an existing entry or add a new one? (update/add): ");
+        String choice = scanner.nextLine().trim().toLowerCase();
+
+        if (choice.equals("update")) {
+            System.out.println("Enter meter type to update: ");
+            String meterType = scanner.nextLine().trim();
+
+            // Find the entry by meter type
+            for (Tax_tariff_info info : pricingList) {
+                if (info.getMeterType().equalsIgnoreCase(meterType)) {
+                    System.out.println("Current data for " + meterType + ":");
+                    info.displayInfo();
+
+                    // Update values
+                    System.out.println("Enter new Regular Unit Price: ");
+                    int newRegularPrice = Integer.parseInt(scanner.nextLine().trim());
+                    info.setRegularUnitPrice(newRegularPrice);
+
+                    System.out.println("Enter new Peak Hour Unit Price (leave blank if N/A): ");
+                    String peakInput = scanner.nextLine().trim();
+                    Integer newPeakPrice = peakInput.isEmpty() ? null : Integer.parseInt(peakInput);
+                    info.setPeakHourUnitPrice(newPeakPrice);
+
+                    System.out.println("Enter new Tax Percentage: ");
+                    int newTaxPercentage = Integer.parseInt(scanner.nextLine().trim());
+                    info.setTaxPercentage(newTaxPercentage);
+
+                    System.out.println("Enter new Fixed Charges: ");
+                    int newFixedCharges = Integer.parseInt(scanner.nextLine().trim());
+                    info.setFixedCharges(newFixedCharges);
+                    savePricingData(pricingList);
+                    System.out.println("Data updated successfully!");
+                    return;
+                }
+            }
+            System.out.println("Meter type not found!");
+
+        } else if (choice.equals("add"))
+        {
+            if(pricingList.size()==4)
+            {
+                System.out.println("There are already four rows You should update them ");
+                return;
+            }
+            System.out.println("Enter new Meter Type: ");
+            String newMeterType = scanner.nextLine().trim();
+
+            System.out.println("Enter Regular Unit Price: ");
+            int newRegularPrice = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.println("Enter Peak Hour Unit Price (leave blank if N/A): ");
+            String peakInput = scanner.nextLine().trim();
+            Integer newPeakPrice = peakInput.isEmpty() ? null : Integer.parseInt(peakInput);
+
+            System.out.println("Enter Tax Percentage: ");
+            int newTaxPercentage = Integer.parseInt(scanner.nextLine().trim());
+
+            System.out.println("Enter Fixed Charges: ");
+            int newFixedCharges = Integer.parseInt(scanner.nextLine().trim());
+
+            // Add new entry to the list
+            Tax_tariff_info newInfo = new Tax_tariff_info(newMeterType, newRegularPrice, newPeakPrice, newTaxPercentage, newFixedCharges);
+            pricingList.add(newInfo);
+            savePricingData(pricingList);
+            System.out.println("New entry added successfully!");
+        } else {
+            System.out.println("Invalid choice! Please choose 'update' or 'add'.");
+        }
+    }
+
+
 
 
 }

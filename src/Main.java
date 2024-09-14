@@ -9,8 +9,21 @@ public class Main {
         e.load_EmployeeData();
         List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
         List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
-        List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\TariffTaxInfo.txt");
         List<NadraDB>ndb=NadraDB.Load_NBData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\NadraDB.txt");
+         Tax_tariff_info t1=new Tax_tariff_info("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\TariffTaxInfo.txt");
+         List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData();
+
+
+
+
+
+
+         //updating tariff_tax_info
+//          Tax_tariff_info t2=new Tax_tariff_info();
+//          t2.updateOrAddData(pricingInfos);
+
+
+
 
 
         //showing bill_reports
@@ -40,7 +53,7 @@ public class Main {
 //            billingInfo.displayBillingInfo();
 //        }
 
-        // Display the loaded pricing data
+         //Display the loaded pricing data
 //        for (Tax_tariff_info pricingInfo : pricingInfos) {
 //            pricingInfo.displayInfo();
 //        }

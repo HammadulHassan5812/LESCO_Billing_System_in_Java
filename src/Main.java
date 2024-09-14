@@ -8,6 +8,8 @@ public class Main {
         e.load_EmployeeData();
         List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
         List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
+        List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\TariffTaxInfo.txt");
+
 
 
 
@@ -21,7 +23,7 @@ public class Main {
 
 
 //
-//        // Display all customer data
+        // Display all customer data
 //        for (Customer customer : customers) {
 //            customer.displayCustomerInfo();
 //        }
@@ -30,6 +32,11 @@ public class Main {
 
 //        for (BillingInfo billingInfo : billingInfos) {
 //            billingInfo.displayBillingInfo();
+//        }
+
+        // Display the loaded pricing data
+//        for (Tax_tariff_info pricingInfo : pricingInfos) {
+//            pricingInfo.displayInfo();
 //        }
 
 

@@ -6,7 +6,7 @@ import java.util.*;
 public class Customer
 {
    private String cus_id;
-   private long CNIC;
+   private String CNIC;
    private  String Name;
    private String Phone_no;
    private String Address;
@@ -16,7 +16,7 @@ public class Customer
    private int reg_hour_units;
    private int peak_hour_units;
 
-     public Customer(String cus_id, long CNIC, String Name, String Address, String Phone_no, char Cus_type, String Meter_type, String connec_date, int reg_hour_units, int peak_hour_units)
+     public Customer(String cus_id, String CNIC, String Name, String Address, String Phone_no, char Cus_type, String Meter_type, String connec_date, int reg_hour_units, int peak_hour_units)
      {
       this.cus_id = cus_id;
       this.CNIC = CNIC;
@@ -58,7 +58,7 @@ public class Customer
     String[] parts = line.split(",");
     if (parts.length == 10) {
      String cus_id = parts[0];
-     long CNIC = Long.parseLong(parts[1]);
+     String CNIC = parts[1];
      String Name = parts[2];
      String Address = parts[3];
      String Phone_no = parts[4];

@@ -7,7 +7,8 @@ public class Main {
         //Loading files data
         Employee e = new Employee("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\EmployeesData.txt");
         e.load_EmployeeData();
-        List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
+        Customer cus=new Customer("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
+        List<Customer> customers =Customer.loadCustomerData();
         List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
         NadraDB ndb1=new NadraDB("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\NadraDB.txt");
         List<NadraDB>ndb=NadraDB.Load_NBData();
@@ -15,6 +16,9 @@ public class Main {
          List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData();
 
 
+         //view curr_bill;
+        Customer cus3=new Customer();
+        cus3.view_curr_bill(billingInfos,pricingInfos);
 
 
 

@@ -6,11 +6,11 @@ import java.util.*;
 
 
 public class Tax_tariff_info {
-    private String meterType;
-    private int regularUnitPrice;
-    private Integer peakHourUnitPrice; // use Integer to handle null values
-    private int taxPercentage;
-    private int fixedCharges;
+    public String meterType;
+    public int regularUnitPrice;
+    public Integer peakHourUnitPrice; // use Integer to handle null values
+    public int taxPercentage;
+    public int fixedCharges;
     public static String filename;
     Tax_tariff_info(String fn)
     {

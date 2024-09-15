@@ -6,7 +6,7 @@ import java.util.*;
 
 public class BillingInfo
 {
-    private String cus_id;
+    public String cus_id;
     int billing_month;
     int curr_reg_meter;
     int curr_reg_peak;

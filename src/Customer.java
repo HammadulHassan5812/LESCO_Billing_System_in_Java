@@ -15,7 +15,11 @@ public class Customer
    private String connec_date;
    private int reg_hour_units;
    private int peak_hour_units;
-
+   static String filename;
+     public  Customer(String filename1)
+     {
+         this.filename=filename1;
+     }
 
      public  Customer(){}
 
@@ -49,7 +53,7 @@ public class Customer
  }
 
 
- public static List<Customer> loadCustomerData(String filename) {
+ public static List<Customer> loadCustomerData() {
   List<Customer> customerList = new ArrayList<>();
   try {
    BufferedReader reader = new BufferedReader(new FileReader(filename));
@@ -82,6 +86,112 @@ public class Customer
   }
   return customerList;
  }
+
+    public void view_curr_bill(List<BillingInfo> billingInfos, List<Tax_tariff_info> pricingInfos) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Collect input from the user
+        System.out.print("Enter your 4-digit Customer ID: ");
+        String customerId = scanner.nextLine();
+
+        System.out.print("Enter your CNIC: ");
+        String enteredCNIC = scanner.nextLine();
+
+        System.out.print("Enter your Meter Type (1Phase/3Phase): ");
+        String enteredMeterType = scanner.nextLine();
+
+        System.out.print("Enter your current regular meter reading: ");
+        int currRegMeterReading = scanner.nextInt();
+
+        int currPeakMeterReading = 0;
+        if (enteredMeterType.equalsIgnoreCase("3Phase")) {
+            System.out.print("Enter your current peak meter reading: ");
+            currPeakMeterReading = scanner.nextInt();
+        }
+
+        // Step 2: Find matching customer
+        Customer matchedCustomer = null;
+        for (Customer customer : loadCustomerData()) {
+            if (customer.cus_id.equals(customerId) && customer.CNIC.equals(enteredCNIC)
+                    && customer.Meter_type.equalsIgnoreCase(enteredMeterType)) {
+                matchedCustomer = customer;
+                break;
+            }
+        }
+
+        if (matchedCustomer == null) {
+            System.out.println("Invalid Customer ID, CNIC, or Meter Type.");
+            return;
+        }
+
+        // Step 3: Find the tariff for the entered meter type
+        Tax_tariff_info matchedTariff = null;
+        for (Tax_tariff_info tariff : pricingInfos) {
+            if (tariff.meterType.equalsIgnoreCase(enteredMeterType)) {
+                matchedTariff = tariff;
+                break;
+            }
+        }
+
+        if (matchedTariff == null) {
+            System.out.println("No tariff information found for your meter type.");
+            return;
+        }
+
+        // Step 4: Find the billing information for the matched customer
+        BillingInfo matchedBillingInfo = null;
+        for (BillingInfo billingInfo : billingInfos) {
+            if (billingInfo.cus_id.equals(customerId)) {
+                matchedBillingInfo = billingInfo;
+                break;
+            }
+        }
+
+        if (matchedBillingInfo == null) {
+            System.out.println("No billing information found for your customer ID.");
+            return;
+        }
+
+        // Step 5: Calculate electricity cost
+        int regularUnitsConsumed = currRegMeterReading - matchedCustomer.reg_hour_units;
+        int peakUnitsConsumed = (enteredMeterType.equalsIgnoreCase("3Phase"))
+                ? (currPeakMeterReading - matchedCustomer.peak_hour_units)
+                : 0;
+
+        int regCost = regularUnitsConsumed * matchedTariff.regularUnitPrice;
+        int peakCost = peakUnitsConsumed * (matchedTariff.peakHourUnitPrice != null ? matchedTariff.peakHourUnitPrice : 0);
+        int totalElectricityCost = regCost + peakCost;
+
+        // Step 6: Calculate total cost with tax and fixed charges
+        int taxAmount = (totalElectricityCost * matchedTariff.taxPercentage) / 100;
+        int totalAmountDue = totalElectricityCost + taxAmount + matchedTariff.fixedCharges;
+
+        // Step 7: Display the bill
+        System.out.println("\n--- Customer Information ---");
+        matchedCustomer.displayCustomerInfo();
+
+        System.out.println("--- Bill Information ---");
+        System.out.println("Billing Month: " + matchedBillingInfo.billing_month);
+        System.out.println("Current Regular Meter Reading: " + currRegMeterReading);
+        if (enteredMeterType.equalsIgnoreCase("3Phase")) {
+            System.out.println("Current Peak Meter Reading: " + currPeakMeterReading);
+        }
+        System.out.println("Electricity Cost (Regular): " + regCost);
+        if (enteredMeterType.equalsIgnoreCase("3Phase")) {
+            System.out.println("Electricity Cost (Peak): " + peakCost);
+        }
+        System.out.println("Sales Tax: " + taxAmount);
+        System.out.println("Fixed Charges: " + matchedTariff.fixedCharges);
+        System.out.println("Total Amount Due: " + totalAmountDue);
+        System.out.println("Due Date: " + matchedBillingInfo.due_date);
+        System.out.println("Bill Payment Status: " + matchedBillingInfo.bill_paid_status);
+
+        if (!matchedBillingInfo.payment_date.isEmpty()) {
+            System.out.println("Payment Date: " + matchedBillingInfo.payment_date);
+        }
+        System.out.println();
+    }
+
 
 
 

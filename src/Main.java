@@ -9,9 +9,19 @@ public class Main {
         e.load_EmployeeData();
         List<Customer> customers =Customer.loadCustomerData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Customerinfo.txt");
         List<BillingInfo> billingInfos = BillingInfo.loadBillingData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt");
-        List<NadraDB>ndb=NadraDB.Load_NBData("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\NadraDB.txt");
+        NadraDB ndb1=new NadraDB("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\NadraDB.txt");
+        List<NadraDB>ndb=NadraDB.Load_NBData();
          Tax_tariff_info t1=new Tax_tariff_info("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\TariffTaxInfo.txt");
          List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData();
+
+
+
+
+
+         //checks_expiry date of cutomers
+              NadraDB nadraDB=new NadraDB();
+            nadraDB.Check_expiry(ndb,customers);
+            nadraDB.update_expiry_date(ndb,customers);
 
 
 

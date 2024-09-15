@@ -16,6 +16,9 @@ public class Customer
    private int reg_hour_units;
    private int peak_hour_units;
 
+
+     public  Customer(){}
+
      public Customer(String cus_id, String CNIC, String Name, String Address, String Phone_no, char Cus_type, String Meter_type, String connec_date, int reg_hour_units, int peak_hour_units)
      {
       this.cus_id = cus_id;

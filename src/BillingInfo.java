@@ -116,5 +116,32 @@ public BillingInfo(){}
     }
 
 
+    public void view_bill(List<BillingInfo> billingInfos) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt user for customer ID
+        System.out.print("Enter Customer ID to view the bill: ");
+        String customerId = scanner.nextLine();
+
+        boolean billFound = false;
+
+        // Iterate through the list of billing info to find the matching customer ID
+        for (BillingInfo billingInfo : billingInfos) {
+            if (billingInfo.cus_id.equals(customerId)) {
+                // Display billing information
+                billingInfo.displayBillingInfo();
+                billFound = true;
+                break;  // Exit the loop once the bill is found and displayed
+            }
+        }
+
+        if (!billFound) {
+            System.out.println("No bill found for Customer ID: " + customerId);
+        }
+    }
+
+
+
+
 
 }

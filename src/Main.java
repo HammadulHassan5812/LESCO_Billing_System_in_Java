@@ -18,10 +18,22 @@ public class Main {
 
 
 
-         //checks_expiry date of cutomers
-              NadraDB nadraDB=new NadraDB();
-            nadraDB.Check_expiry(ndb,customers);
-            nadraDB.update_expiry_date(ndb,customers);
+
+
+
+
+
+
+        //view any bill with customer_id
+//         BillingInfo b1=new BillingInfo();
+//         b1.view_bill(billingInfos);
+
+
+
+         //checks_expiry date and update expiry_date of cutomers
+//              NadraDB nadraDB=new NadraDB();
+//            nadraDB.Check_expiry(ndb,customers);
+//            nadraDB.update_expiry_date(ndb,customers);
 
 
 

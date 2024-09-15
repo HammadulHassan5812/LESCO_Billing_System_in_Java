@@ -5,8 +5,8 @@ import java.util.*;
 
 public class Customer
 {
-   private String cus_id;
-   private String CNIC;
+   public String cus_id;
+   public String CNIC;
    private  String Name;
    private String Phone_no;
    private String Address;

@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.io.*;
 import java.util.*;
+import  java.io.BufferedWriter;
+import  java.io.BufferedReader;
 
 public class Customer
 {
@@ -191,6 +193,102 @@ public class Customer
         }
         System.out.println();
     }
+
+
+    public void update_customer_data(List<Customer> cusInfos) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Ask the user for the customer ID to update
+        System.out.print("Enter the Customer ID of the customer you want to update: ");
+        String customerId = scanner.nextLine();
+
+        // Step 2: Find the customer in the list
+        Customer matchedCustomer = null;
+        for (Customer customer : cusInfos) {
+            if (customer.cus_id.equals(customerId)) {
+                matchedCustomer = customer;
+                break;
+            }
+        }
+
+        if (matchedCustomer == null) {
+            System.out.println("Customer with the given ID not found.");
+            return;
+        }
+
+        // Step 3: Ask the user what they want to update
+        System.out.println("What would you like to update?");
+        System.out.println("1. Customer ID");
+        System.out.println("2. Phone Number");
+        System.out.println("3. Address");
+        System.out.println("4. Regular Hour Units");
+        System.out.println("5. Peak Hour Units");
+        System.out.print("Enter your choice (1-5): ");
+        int choice = scanner.nextInt();
+        scanner.nextLine(); // Clear the buffer
+
+        switch (choice) {
+            case 1:
+                // Update Customer ID
+                System.out.print("Enter new Customer ID: ");
+                String newCusId = scanner.nextLine();
+                matchedCustomer.cus_id = newCusId;
+                break;
+
+            case 2:
+                // Update Phone Number
+                System.out.print("Enter new Phone Number: ");
+                String newPhone = scanner.nextLine();
+                matchedCustomer.Phone_no = newPhone;
+                break;
+
+            case 3:
+                // Update Address
+                System.out.print("Enter new Address: ");
+                String newAddress = scanner.nextLine();
+                matchedCustomer.Address = newAddress;
+                break;
+
+            case 4:
+                // Update Regular Hour Units
+                System.out.print("Enter new Regular Hour Units: ");
+                int newRegHours = scanner.nextInt();
+                matchedCustomer.reg_hour_units = newRegHours;
+                break;
+
+            case 5:
+                // Update Peak Hour Units (only for customers with 3-phase meters)
+                if (matchedCustomer.Meter_type.equalsIgnoreCase("3Phase")) {
+                    System.out.print("Enter new Peak Hour Units: ");
+                    int newPeakHours = scanner.nextInt();
+                    matchedCustomer.peak_hour_units = newPeakHours;
+                } else {
+                    System.out.println("This customer does not have a 3-phase meter.");
+                }
+                break;
+
+            default:
+                System.out.println("Invalid choice.");
+                return;
+        }
+
+        // Step 4: Save the updated customer list back into the file
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+            for (Customer customer : cusInfos) {
+                writer.write(customer.cus_id + "," + customer.CNIC + "," + customer.Name + "," + customer.Address + ","
+                        + customer.Phone_no + "," + customer.Cus_type + "," + customer.Meter_type + "," + customer.connec_date
+                        + "," + customer.reg_hour_units + "," + customer.peak_hour_units);
+                writer.newLine();
+            }
+            writer.close();
+            System.out.println("Customer data updated successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating customer data.");
+        }
+    }
+
 
 
 

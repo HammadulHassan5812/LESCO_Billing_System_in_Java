@@ -16,9 +16,14 @@ public class Main {
          List<Tax_tariff_info> pricingInfos = Tax_tariff_info.loadPricingData();
 
 
-         //view curr_bill;
-        Customer cus3=new Customer();
-        cus3.view_curr_bill(billingInfos,pricingInfos);
+
+
+
+           //Customer cus3=new Customer();
+          // cus3.update_customer_data(customers);  //update customer's data
+//        cus3.view_curr_bill(billingInfos,pricingInfos);  //view curr_bill;
+
+
 
 
 

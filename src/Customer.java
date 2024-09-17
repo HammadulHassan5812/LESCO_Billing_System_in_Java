@@ -9,14 +9,14 @@ public class Customer
 {
    public String cus_id;
    public String CNIC;
-   private  String Name;
-   private String Phone_no;
-   private String Address;
-   private Character Cus_type;
-   private String Meter_type;
-   private String connec_date;
-   private int reg_hour_units;
-   private int peak_hour_units;
+   public   String Name;
+   public String Phone_no;
+   public String Address;
+   public Character Cus_type;
+   public String Meter_type;
+   public String connec_date;
+   public int reg_hour_units;
+   public int peak_hour_units;
    static String filename;
      public  Customer(String filename1)
      {
@@ -288,6 +288,140 @@ public class Customer
             System.out.println("Error updating customer data.");
         }
     }
+
+
+
+
+    public void add_row(List<Customer> cusInfos, List<BillingInfo> billInfos, List<NadraDB> nadraInfos) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Step 1: Ask for CNIC
+        System.out.print("Enter CNIC of the customer: ");
+        String cnic = scanner.nextLine();
+
+        // Step 2: Check if the customer already has 3 meters installed
+        int meterCount = 0;
+        for (Customer customer : cusInfos) {
+            if (customer.CNIC.equals(cnic)) {
+                meterCount++;
+            }
+        }
+
+        // If meter limit reached, display message and return
+        if (meterCount >= 3) {
+            System.out.println("Meter limit reached for this customer.");
+            return;
+        }
+
+        // Step 3: Ask for customer details
+        System.out.println("Enter new meter information for the customer:");
+
+        System.out.print("Enter Customer ID: ");
+        String cusId = scanner.nextLine();
+
+        System.out.print("Enter Name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter Address: ");
+        String address = scanner.nextLine();
+
+        System.out.print("Enter Phone Number: ");
+        String phone = scanner.nextLine();
+
+        System.out.print("Enter Customer Type (D for Domestic, C for Commercial): ");
+        char cusType = scanner.nextLine().charAt(0);
+
+        System.out.print("Enter Meter Type (1Phase/3Phase): ");
+        String meterType = scanner.nextLine();
+
+        System.out.print("Enter Connection Date (dd/mm/yyyy): ");
+        String connecDate = scanner.nextLine();
+
+        System.out.print("Enter Regular Hour Units: ");
+        int regHourUnits = scanner.nextInt();
+
+        int peakHourUnits = 0;
+        if (meterType.equalsIgnoreCase("3Phase")) {
+            System.out.print("Enter Peak Hour Units: ");
+            peakHourUnits = scanner.nextInt();
+        }
+
+        // Step 4: Create and add the new customer to the list
+        Customer newCustomer = new Customer(cusId, cnic, name, address, phone, cusType, meterType, connecDate, regHourUnits, peakHourUnits);
+        cusInfos.add(newCustomer);
+
+        // Step 5: Ask for billing information and add to the billing list
+        System.out.println("Enter billing information:");
+
+        System.out.print("Enter Billing Month (as an integer, e.g., 1 for January): ");
+        int billingMonth = scanner.nextInt();
+
+        System.out.print("Enter Current Regular Meter Reading: ");
+        int currRegMeter = scanner.nextInt();
+
+        int currPeakMeter = 0;
+        if (meterType.equalsIgnoreCase("3Phase")) {
+            System.out.print("Enter Current Peak Meter Reading: ");
+            currPeakMeter = scanner.nextInt();
+        }
+
+        System.out.print("Enter Reading Date (dd/mm/yyyy): ");
+        scanner.nextLine();  // Clear the buffer
+        String readingDate = scanner.nextLine();
+
+        System.out.print("Enter Cost of Electricity: ");
+        int costOfElec = scanner.nextInt();
+
+        System.out.print("Enter Sales Tax: ");
+        int salesTax = scanner.nextInt();
+
+        System.out.print("Enter Fixed Charges: ");
+        int fixedCharges = scanner.nextInt();
+
+        int totalAmnt = costOfElec + salesTax + fixedCharges;
+
+        System.out.print("Enter Due Date (dd/mm/yyyy): ");
+        scanner.nextLine();  // Clear the buffer
+        String dueDate = scanner.nextLine();
+
+        System.out.print("Enter Bill Paid Status (Paid/Unpaid): ");
+        String billPaidStatus = scanner.nextLine();
+
+        System.out.print("Enter Payment Date (if paid, otherwise leave blank): ");
+        String paymentDate = scanner.nextLine();
+
+        // Step 6: Create and add the new billing info to the list
+        BillingInfo newBillingInfo = new BillingInfo(cusId, billingMonth, currRegMeter, currPeakMeter, readingDate, costOfElec, salesTax, fixedCharges, totalAmnt, dueDate, billPaidStatus, paymentDate);
+        billInfos.add(newBillingInfo);
+
+        // Step 7: Save the new customer and billing info to their respective files
+        try {
+            // Save customer info
+            BufferedWriter cusWriter = new BufferedWriter(new FileWriter(filename, true)); // Append mode
+            cusWriter.write(newCustomer.cus_id + "," + newCustomer.CNIC + "," + newCustomer.Name + "," + newCustomer.Address + ","
+                    + newCustomer.Phone_no + "," + newCustomer.Cus_type + "," + newCustomer.Meter_type + "," + newCustomer.connec_date + ","
+                    + newCustomer.reg_hour_units + "," + newCustomer.peak_hour_units);
+            cusWriter.newLine();
+            cusWriter.close();
+
+            // Save billing info
+            BufferedWriter billWriter = new BufferedWriter(new FileWriter("C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\Billinginfo.txt", true));
+            // Append mode
+            billWriter.newLine();
+            billWriter.write(newBillingInfo.cus_id + "," + newBillingInfo.billing_month + "," + newBillingInfo.curr_reg_meter + "," + newBillingInfo.curr_reg_peak + ","
+                    + newBillingInfo.reading_date + "," + newBillingInfo.cost_of_elec + "," + newBillingInfo.sales_tax + ","
+                    + newBillingInfo.fixed_charges + "," + newBillingInfo.total_amnt + "," + newBillingInfo.due_date + ","
+                    + newBillingInfo.bill_paid_status + "," + newBillingInfo.payment_date);
+            billWriter.newLine();
+            billWriter.close();
+
+            System.out.println("New meter installed and customer/billing information saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error saving customer or billing data.");
+        }
+    }
+
 
 
 

@@ -2,6 +2,10 @@ import java.util.Scanner;
 import java.io.IOException;
 import java.io.*;
 import java.util.*;
+import java.io.BufferedWriter;
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.FileReader;
 
 
 public class BillingInfo
@@ -139,6 +143,118 @@ public BillingInfo(){}
             System.out.println("No bill found for Customer ID: " + customerId);
         }
     }
+
+
+    public void update_status(List<BillingInfo> billingInfos, List<Customer> cusInfos) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Prompt user for Customer ID
+        System.out.print("Enter Customer ID to update bill status: ");
+        String customerId = scanner.nextLine();
+
+        boolean billingInfoFound = false;
+        boolean customerInfoFound = false;
+
+        // Find the corresponding BillingInfo and update the bill paid status
+        for (BillingInfo billingInfo : billingInfos) {
+            if (billingInfo.cus_id.equals(customerId)) {
+                billingInfoFound = true;
+
+                // Display current bill status
+                System.out.println("Current Bill Paid Status: " + billingInfo.bill_paid_status);
+
+                // Update bill status
+                if (billingInfo.bill_paid_status.equals("unpaid")) {
+                    billingInfo.bill_paid_status = "paid";  // Update to paid
+                    System.out.println("Bill status updated to 'paid'.");
+
+                    // Now update the corresponding customer information if customer is domestic
+                    for (Customer customer : cusInfos) {
+                        if (customer.cus_id.equals(customerId)) {
+                            customerInfoFound = true;
+
+                            if (customer.Cus_type == 'D') {  // Check if customer is domestic
+                                // Prompt the user to enter the updated regular and peak hour units
+                                System.out.print("Enter the updated regular hour units: ");
+                                customer.reg_hour_units = scanner.nextInt();
+
+                                if (customer.Meter_type.equalsIgnoreCase("3Phase")) {
+                                    System.out.print("Enter the updated peak hour units: ");
+                                    customer.peak_hour_units = scanner.nextInt();
+                                }
+
+                                System.out.println("Updated regular and peak hour units have been saved for the customer.");
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    System.out.println("Bill is already marked as paid.");
+                }
+                break;
+            }
+        }
+
+        if (!billingInfoFound) {
+            System.out.println("No billing information found for Customer ID: " + customerId);
+        } else if (!customerInfoFound) {
+            System.out.println("No customer information found for Customer ID: " + customerId);
+        }
+
+        // Save updated billing information and customer information back to files
+        saveBillingData(billingInfos, "C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\BillingInfo.txt");
+        saveCustomerData(cusInfos, "C:\\Users\\city\\Desktop\\java\\LESCO_Billing_System_in_Java\\data\\CustomerInfo.txt");
+    }
+
+
+    // Method to save updated billing information back to the file
+    // Method to save updated billing information back to the file
+    private void saveBillingData(List<BillingInfo> billingInfos, String filename) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+            // Write each billing info back to the file
+            for (BillingInfo billingInfo : billingInfos) {
+                writer.write(billingInfo.cus_id + "," + billingInfo.billing_month + "," + billingInfo.curr_reg_meter + "," + billingInfo.curr_reg_peak + ","
+                        + billingInfo.reading_date + "," + billingInfo.cost_of_elec + "," + billingInfo.sales_tax + ","
+                        + billingInfo.fixed_charges + "," + billingInfo.total_amnt + "," + billingInfo.due_date + ","
+                        + billingInfo.bill_paid_status + "," + (billingInfo.payment_date.equals("") ? "0" : billingInfo.payment_date));
+                writer.newLine();
+            }
+
+            writer.close();
+            System.out.println("Billing data updated and saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating billing data.");
+        }
+    }
+
+    // Method to save updated customer information back to the file
+    private void saveCustomerData(List<Customer> cusInfos, String filename) {
+        try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+
+            // Write each customer info back to the file
+            for (Customer customer : cusInfos) {
+                writer.write(customer.cus_id + "," + customer.CNIC + "," + customer.Name + "," + customer.Address + ","
+                        + customer.Phone_no + "," + customer.Cus_type + "," + customer.Meter_type + "," + customer.connec_date + ","
+                        + customer.reg_hour_units + "," + customer.peak_hour_units);
+                writer.newLine();
+            }
+
+            writer.close();
+            System.out.println("Customer data updated and saved successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error updating customer data.");
+        }
+    }
+
+
+
+
+
 
 
 

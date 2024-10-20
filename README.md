@@ -104,3 +104,8 @@ password (after login) to view reports of customers whose CNIC is about to expir
 12. The LESCO billing system shall allow the LESCO customers to update the expiry date of their
 own CNIC mentioned in NADRADB file. The system shall require the customers to enter their
 CNIC number and customer number before they can update the expiry date.
+
+
+
+![7816980a-5c42-47f5-ac2e-cde20e552772](https://github.com/user-attachments/assets/ec0216a4-effa-4e52-b73c-bbd27150bfe1)
+
